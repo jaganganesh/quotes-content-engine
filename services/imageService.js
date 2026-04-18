@@ -7,14 +7,16 @@ import {
   USER_AGENT,
   REQUEST_TIMEOUT_MS,
 } from "../configuration.js";
-import FALLBACK_IMAGE from "../libraries/imageLibrary.js";
+import fallbackImage from "../libraries/imageLibrary.js";
 import randomPick from "../utils/randomPick.js";
 
-const fallbackResponse = async (reason, fallbackImagePath) => {
+const fallbackResponse = async (reason) => {
   console.log(`Using fallback image due to: ${reason}`);
   return {
-    url: `file://${fallbackImagePath}`,
+    url: `file://${fallbackImage[0].path}`,
     path: TEMP_IMAGE_STORAGE,
+    author: fallbackImage[0].author,
+    author_url: fallbackImage[0].author_url,
   };
 };
 
@@ -36,7 +38,7 @@ const getImage = async () => {
 
   if (!unsplashAccessKey) {
     console.log("Unsplash access key is missing. Using fallback image.");
-    return fallbackResponse("Missing Unsplash access key", FALLBACK_IMAGE);
+    return fallbackResponse("Missing Unsplash access key");
   }
 
   try {
@@ -58,20 +60,23 @@ const getImage = async () => {
     if (!response.ok) {
       return fallbackResponse(
         `Unsplash API error: ${response.status} ${response.statusText}`,
-        FALLBACK_IMAGE,
       );
     }
 
     const data = await response.json();
-    console.log("Image fetched successfully from Unsplash", response.ok);
+    console.log(
+      `Image fetched successfully from Unsplash: Author - ${data.user.name} Link - ${data.user.links.html}`,
+    );
 
     return {
       url: data.urls.regular,
       path: TEMP_IMAGE_STORAGE,
+      author: data.user.name,
+      author_url: data.user.links.html,
     };
   } catch (error) {
     console.error("Error fetching image from Unsplash:", error);
-    return fallbackResponse(error.message, FALLBACK_IMAGE);
+    return fallbackResponse(error.message);
   }
 };
 export default getImage;

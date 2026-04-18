@@ -1,3 +1,9 @@
-const FALLBACK_IMAGE = "resources/images/background.jpg";
+const fallbackImage = [
+  {
+    path: "resources/images/background.jpg",
+    author: "Devin Pickell",
+    author_url: "https://unsplash.com/@nextiva",
+  },
+];
 
-export default FALLBACK_IMAGE;
+export default fallbackImage;

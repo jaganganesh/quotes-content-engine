@@ -73,5 +73,10 @@ const getQuote = async () => {
       }
     }
   }
+
+  // If all attempts fail, throw an error
+  throw new Error(
+    `Failed to fetch quote after ${QUOTE_RETRY_ATTEMPTS} attempts`,
+  );
 };
 export default getQuote;

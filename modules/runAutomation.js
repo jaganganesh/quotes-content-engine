@@ -12,6 +12,8 @@ const runAutomation = async () => {
 
     const image = await getImage();
     console.log("Image URL:", image.url);
+    console.log("Image Author:", image.author);
+    console.log("Image Author URL:", image.author_url);
 
     await downloadFile(image.url, image.path);
     console.log("Automation completed successfully");
