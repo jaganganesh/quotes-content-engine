@@ -23,7 +23,8 @@ export const TEMP_IMAGE_STORAGE = `${TEMP_PATH}/image.jpg`;
 export const TEMP_MUSIC_STORAGE = `${TEMP_PATH}/sound.wav`;
 
 // Image
-export const BACKGROUND_QUERY_LIST = [
+export const IMAGE_PATH = "resources/images/";
+export const IMAGE_QUERY_LIST = [
   "mountain landscape",
   "misty lake landscape",
   "ocean horizon",
@@ -35,5 +36,9 @@ export const BACKGROUND_QUERY_LIST = [
   "grassland",
   "embers",
 ];
-
+export const IMAGE_CONTENT_FILTER = "high";
 export const IMAGE_ORIENTATION = "portrait";
+export const UNSPLASH_LICENSE = "Unsplash License";
+
+// Music
+export const MUSIC_PATH = "resources/music/";

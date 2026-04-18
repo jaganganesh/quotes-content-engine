@@ -1,8 +1,11 @@
+import { UNSPLASH_LICENSE } from "../configuration.js";
+
 const fallbackImage = [
   {
-    path: "resources/images/background.jpg",
+    path: "background.jpg",
     author: "Devin Pickell",
     sourceUrl: "https://unsplash.com/@nextiva",
+    license: UNSPLASH_LICENSE,
   },
 ];
 
