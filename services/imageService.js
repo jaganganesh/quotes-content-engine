@@ -16,7 +16,7 @@ const fallbackResponse = async (reason) => {
     url: `file://${fallbackImage[0].path}`,
     path: TEMP_IMAGE_STORAGE,
     author: fallbackImage[0].author,
-    author_url: fallbackImage[0].author_url,
+    sourceUrl: fallbackImage[0].sourceUrl,
   };
 };
 
@@ -72,7 +72,7 @@ const getImage = async () => {
       url: data.urls.regular,
       path: TEMP_IMAGE_STORAGE,
       author: data.user.name,
-      author_url: data.user.links.html,
+      sourceUrl: data.user.links.html,
     };
   } catch (error) {
     console.error("Error fetching image from Unsplash:", error);
