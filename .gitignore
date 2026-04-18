@@ -1,3 +1,16 @@
+# Secrets
+client_secret.json
+refresh_token.json
+token.json
+
+# Project Files
+output/*
+output/temp/*
+
+# Apple FileSystem
+.DS_Store
+__MACOSX
+
 # Logs
 logs
 *.log

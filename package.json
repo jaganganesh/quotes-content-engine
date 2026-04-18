@@ -1,0 +1,47 @@
+{
+  "name": "quotes-content-engine",
+  "version": "0.0.1",
+  "description": "An automated short-form video generation and publishing system for YouTube, Instagram, and TikTok using GitHub Actions.",
+  "keywords": [
+    "automation",
+    "ffmpeg",
+    "video-generation",
+    "tiktok",
+    "github-actions",
+    "content-publishing",
+    "youtube-shorts",
+    "instagram-reels",
+    "short-form-video",
+    "zenquotes"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github-personal:jaganganesh/quotes-content-engine.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Jagan Ganesh",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --fix --ext .js .",
+    "format": "prettier --write \"**/*.{js,json,md,yml,yaml}\"",
+    "memory:flush": "node scripts/flushMemory.js --all",
+    "memory:flush:youtube": "node scripts/flushMemory.js --platform youtube",
+    "memory:flush:instagram": "node scripts/flushMemory.js --platform instagram",
+    "memory:flush:tiktok": "node scripts/flushMemory.js --platform tiktok"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "canvas": "^3.2.1",
+    "dotenv": "^17.3.1",
+    "fs-extra": "^11.3.4",
+    "googleapis": "^171.4.0",
+    "open": "^11.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1"
+  }
+}
