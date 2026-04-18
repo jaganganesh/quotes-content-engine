@@ -1,6 +1,7 @@
 import {
   QUOTE_ENDPOINT,
   USER_AGENT,
+  ENGINE_NAME,
   MAX_QUOTE_LENGTH,
   MIN_QUOTE_LENGTH,
   REQUEST_TIMEOUT_MS,
@@ -38,6 +39,7 @@ const getQuote = async () => {
       console.log(`Attempt ${attempt} to fetch quote from ${QUOTE_ENDPOINT}`);
       const response = await fetch(QUOTE_ENDPOINT, {
         headers: {
+          "X-Engine-Name": ENGINE_NAME,
           "User-Agent": USER_AGENT,
         },
         timeout: REQUEST_TIMEOUT_MS,
