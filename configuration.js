@@ -69,9 +69,21 @@ export const WATERMARK_MARGIN_RIGHT = 60;
 export const WATERMARK_MARGIN_BOTTOM = 60;
 export const WATERMARK_OPACITY = 0.72;
 
-// Output Configuration
+// Overlay
 export const OVERLAY_WIDTH = 1080;
 export const OVERLAY_HEIGHT = 1920;
 export const OVERLAY_SAFE_TOP = 220;
 export const OVERLAY_SAFE_BOTTOM = 280;
 export const OVERLAY_SAFE_SIDES_PADDING = 120;
+
+// Video
+export const VIDEO_AUDIO_VOLUME = 1;
+export const VIDEO_FRAME_RATE = 60;
+export const VIDEO_DURATION_SECONDS = 10;
+export const VIDEO_BACKGROUND_START_ZOOM = 1;
+export const VIDEO_BACKGROUND_END_ZOOM = 1.1;
+export const VIDEO_BACKGROUND_SOURCE_MULTIPLIER = 2;
+export const VIDEO_FADE_DURATION_SECONDS = 2;
+
+// Output
+export const OUTPUT_VIDEO_STORAGE = "output/video.mp4";

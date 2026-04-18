@@ -31,9 +31,8 @@ const generateColorString = (opacity) =>
  * @returns {Object} Gradient object with top, middle, bottom colors and angle
  */
 const randomDarkGradient = () => {
-  const angle = Math.floor(Math.random() * 360);
   const topOpacity = generateOpacity();
-  const middleOpacity = generateOpacity();
+  const middleOpacity = GRADIENT_MAX_OPACITY;
   const bottomOpacity = generateOpacity();
 
   const topColor = generateColorString(topOpacity);
@@ -44,14 +43,12 @@ const randomDarkGradient = () => {
     topColor,
     middleColor,
     bottomColor,
-    angle,
   });
 
   return {
     top: topColor,
     middle: middleColor,
     bottom: bottomColor,
-    angle: angle,
   };
 };
 

@@ -204,15 +204,10 @@ const renderOverlay = async ({ quote, author, showWatermark = false }) => {
     const gradient = randomDarkGradient();
 
     // Gradient
-    const angleRad = (gradient.angle * Math.PI) / 180;
-    const overlayGradient = ctx.createLinearGradient(
-      0,
-      0,
-      Math.cos(angleRad) * OVERLAY_WIDTH,
-      Math.sin(angleRad) * OVERLAY_HEIGHT
-    );
+    const overlayGradient = ctx.createLinearGradient(0, 0, 0, OVERLAY_HEIGHT);
     overlayGradient.addColorStop(0, gradient.top);
-    overlayGradient.addColorStop(0.45, gradient.middle);
+    overlayGradient.addColorStop(0.1, gradient.middle);
+    overlayGradient.addColorStop(0.98, gradient.middle);
     overlayGradient.addColorStop(1, gradient.bottom);
 
     ctx.fillStyle = overlayGradient;

@@ -3,11 +3,12 @@ import getQuote from "../services/quoteService.js";
 import getImage from "../services/imageService.js";
 import getMusic from "../services/musicService.js";
 import renderOverlay from "../services/renderService.js";
+import createVideo from "../services/videoService.js";
 import downloadFile from "../utils/downloadFile.js";
 
 dotenv.config();
 
-const runAutomation = async () => {
+const generateVideo = async () => {
   try {
     const quote = await getQuote();
     console.log("Quote fetched:", quote);
@@ -43,16 +44,24 @@ const runAutomation = async () => {
     });
 
     console.log("Overlay data:", overlayData);
-    console.log("Automation completed successfully");
+
+    // Create video with background image, overlay, and music
+    await createVideo({
+      backgroundPath: image.path,
+      overlayPath: overlayData.overlayPath,
+      musicPath: music.path,
+    });
+
+    console.log("Video creation completed successfully.");
   } catch (error) {
     if (error instanceof Error) {
-      console.error("Automation failed:", error.message);
+      console.error("Video creation failed:", error.message);
       console.error("Error stack:", error.stack);
     } else {
-      console.error("Automation failed with unknown error:", error);
+      console.error("Video creation failed with unknown error:", error);
     }
     process.exit(1);
   }
 };
 
-runAutomation();
+generateVideo();
