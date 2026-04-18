@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import getQuote from "../services/quoteService.js";
 import getImage from "../services/imageService.js";
 import getMusic from "../services/musicService.js";
+import renderOverlay from "../services/renderService.js";
 import downloadFile from "../utils/downloadFile.js";
 
 dotenv.config();
@@ -33,6 +34,15 @@ const runAutomation = async () => {
       downloadFile(image.url, image.path),
       downloadFile(music.url, music.path),
     ]);
+
+    // Render overlay with quote and image
+    const overlayData = await renderOverlay({
+      quote: quote.quote,
+      author: quote.author,
+      showWatermark: true,
+    });
+
+    console.log("Overlay data:", overlayData);
     console.log("Automation completed successfully");
   } catch (error) {
     if (error instanceof Error) {

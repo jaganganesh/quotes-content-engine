@@ -4,9 +4,9 @@ import randomPick from "../utils/randomPick.js";
 
 /**
  * Fetches a random music track from the music library
- * @returns {Promise<Object>} Music object with url, path, author, sourceUrl, and license
+ * @returns {Object} Music object with url, path, author, sourceUrl, and license
  */
-const getMusic = async () => {
+const getMusic = () => {
   const randomMusicPick = randomPick(musicLibrary);
   console.log(
     `Random music selected: author=${randomMusicPick.author}, id=${randomMusicPick.id}, license=${randomMusicPick.license}`
