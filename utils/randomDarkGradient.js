@@ -31,24 +31,20 @@ const generateColorString = (opacity) =>
  * @returns {Object} Gradient object with top, middle, bottom colors and angle
  */
 const randomDarkGradient = () => {
-  const topOpacity = generateOpacity();
-  const middleOpacity = GRADIENT_MAX_OPACITY;
-  const bottomOpacity = generateOpacity();
+  const primaryOpacity = generateOpacity();
+  const secondaryOpacity = generateOpacity();
 
-  const topColor = generateColorString(topOpacity);
-  const middleColor = generateColorString(middleOpacity);
-  const bottomColor = generateColorString(bottomOpacity);
+  const primaryGradient = generateColorString(primaryOpacity);
+  const secondaryGradient = `rgba(0, 0, 0, ${secondaryOpacity})`;
 
   console.log("Generated Gradient:", {
-    topColor,
-    middleColor,
-    bottomColor,
+    primaryGradient: primaryGradient,
+    secondaryGradient: secondaryGradient,
   });
 
   return {
-    top: topColor,
-    middle: middleColor,
-    bottom: bottomColor,
+    primaryGradient: primaryGradient,
+    secondaryGradient: secondaryGradient,
   };
 };
 

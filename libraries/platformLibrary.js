@@ -1,18 +1,6 @@
-const platformLibrary = {
-  local: {
-    label: "Local",
-    watermark: {
-      enabled: true,
-    },
-    metadata: {
-      title: [],
-      description: [],
-      tags: {
-        coreTags: [],
-        rotationalTags: [[], []],
-      },
-    },
-  },
+import { OUTPUT_PATH } from "../configuration.js";
+
+export const platformLibrary = {
   youtube: {
     label: "YouTube",
     watermark: {
@@ -57,4 +45,16 @@ const platformLibrary = {
   },
 };
 
-export default platformLibrary;
+export const getPlatformConfig = (platform) => {
+  const config = platformLibrary[platform.toLowerCase()];
+  if (!config) {
+    throw new Error(`Unsupported platform: ${platform}`);
+  }
+  return config;
+};
+
+export const getPlatformPayloadStorage = (platform) =>
+  `${OUTPUT_PATH}/payload.${platform}.json`;
+
+export const getPlatformVideoStorage = (platform) =>
+  `${OUTPUT_PATH}/video.${platform}.mp4`;

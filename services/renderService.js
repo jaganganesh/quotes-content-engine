@@ -205,10 +205,8 @@ const renderOverlay = async ({ quote, author, showWatermark = false }) => {
 
     // Gradient
     const overlayGradient = ctx.createLinearGradient(0, 0, 0, OVERLAY_HEIGHT);
-    overlayGradient.addColorStop(0, gradient.top);
-    overlayGradient.addColorStop(0.1, gradient.middle);
-    overlayGradient.addColorStop(0.98, gradient.middle);
-    overlayGradient.addColorStop(1, gradient.bottom);
+    overlayGradient.addColorStop(0, gradient.secondaryGradient);
+    overlayGradient.addColorStop(0.1, gradient.primaryGradient);
 
     ctx.fillStyle = overlayGradient;
     ctx.fillRect(0, 0, OVERLAY_WIDTH, OVERLAY_HEIGHT);

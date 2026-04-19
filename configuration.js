@@ -16,7 +16,7 @@ export const MIN_QUOTE_LENGTH = 20;
 export const MAX_QUOTE_LENGTH = 220;
 export const UNKNOWN_AUTHOR_NAME = "Unknown";
 
-// Temporary Storage
+// Storage
 export const OUTPUT_PATH = "output";
 export const TEMP_PATH = `${OUTPUT_PATH}/temp`;
 export const TEMP_IMAGE_STORAGE = `${TEMP_PATH}/image.jpg`;
@@ -45,7 +45,7 @@ export const UNSPLASH_LICENSE = "Unsplash License";
 export const MUSIC_PATH = "resources/music/";
 
 // Gradient
-export const GRADIENT_MIN_OPACITY = 0.2;
+export const GRADIENT_MIN_OPACITY = 0.4;
 export const GRADIENT_MAX_OPACITY = 0.8;
 export const GRADIENT_MIN_RGB_VALUE = 0;
 export const GRADIENT_MAX_RGB_VALUE = 80;
