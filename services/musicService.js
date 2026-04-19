@@ -1,23 +1,20 @@
-import { MUSIC_PATH, TEMP_MUSIC_STORAGE } from "../configuration.js";
+import { MUSIC_PATH } from "../configuration.js";
 import musicLibrary from "../libraries/musicLibrary.js";
 import randomPick from "../utils/randomPick.js";
+import { logger } from "../utils/logger.js";
 
 /**
- * Fetches a random music track from the music library
- * @returns {Object} Music object with url, path, author, sourceUrl, and license
+ * Selects random audio metadata from the local library.
+ * @returns {Object}
  */
 const getMusic = () => {
-  const randomMusicPick = randomPick(musicLibrary);
-  console.log(
-    `Random music selected: author=${randomMusicPick.author}, id=${randomMusicPick.id}, license=${randomMusicPick.license}`
-  );
-
+  const pick = randomPick(musicLibrary);
+  logger(`Selected audio track: ${pick.id} by ${pick.author}`);
   return {
-    url: `file://${MUSIC_PATH}${randomMusicPick.id}.wav`,
-    path: TEMP_MUSIC_STORAGE,
-    author: randomMusicPick.author,
-    sourceUrl: randomMusicPick.sourceUrl,
-    license: randomMusicPick.license,
+    url: `file://${MUSIC_PATH}${pick.id}.wav`,
+    author: pick.author,
+    sourceUrl: pick.sourceUrl,
+    license: pick.license,
   };
 };
 

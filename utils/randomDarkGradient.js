@@ -6,45 +6,31 @@ import {
 } from "../configuration.js";
 
 /**
- * Generates a random opacity value within the configured range
- * @returns {string} Opacity value as a string with 2 decimal places
- */
-const generateOpacity = () =>
-  (
-    Math.random() * (GRADIENT_MAX_OPACITY - GRADIENT_MIN_OPACITY) +
-    GRADIENT_MIN_OPACITY
-  ).toFixed(2);
-
-/**
- * Generates a random RGBA color string with the given opacity
- * @param {string} opacity - Opacity value as string
- * @returns {string} RGBA color string
- */
-const generateColorString = (opacity) =>
-  `rgba(${Math.floor(Math.random() * (GRADIENT_MAX_RGB_VALUE - GRADIENT_MIN_RGB_VALUE) + GRADIENT_MIN_RGB_VALUE)}, ${Math.floor(
-    Math.random() * (GRADIENT_MAX_RGB_VALUE - GRADIENT_MIN_RGB_VALUE) +
-      GRADIENT_MIN_RGB_VALUE
-  )}, ${Math.floor(Math.random() * (GRADIENT_MAX_RGB_VALUE - GRADIENT_MIN_RGB_VALUE) + GRADIENT_MIN_RGB_VALUE)}, ${opacity})`;
-
-/**
- * Generates a random dark gradient with three color stops and a random angle
- * @returns {Object} Gradient object with top, middle, bottom colors and angle
+ * Creates aesthetic dark gradient layers for text readability.
+ * @returns {Object} Primary and secondary RGBA strings
  */
 const randomDarkGradient = () => {
-  const primaryOpacity = generateOpacity();
-  const secondaryOpacity = generateOpacity();
+  const genVal = () =>
+    Math.floor(
+      Math.random() * (GRADIENT_MAX_RGB_VALUE - GRADIENT_MIN_RGB_VALUE + 1) +
+        GRADIENT_MIN_RGB_VALUE
+    );
 
-  const primaryGradient = generateColorString(primaryOpacity);
-  const secondaryGradient = `rgba(0, 0, 0, ${secondaryOpacity})`;
+  const genAlpha = () =>
+    (
+      Math.random() * (GRADIENT_MAX_OPACITY - GRADIENT_MIN_OPACITY) +
+      GRADIENT_MIN_OPACITY
+    ).toFixed(2);
 
-  console.log("Generated Gradient:", {
-    primaryGradient: primaryGradient,
-    secondaryGradient: secondaryGradient,
-  });
+  const [r, g, b] = [genVal(), genVal(), genVal()];
+  const primaryAlpha = genAlpha();
+
+  // Secondary alpha is always softer to create a natural "fade-in" effect from the top
+  const secondaryAlpha = (primaryAlpha * 0.45).toFixed(2);
 
   return {
-    primaryGradient: primaryGradient,
-    secondaryGradient: secondaryGradient,
+    primaryGradient: `rgba(${r}, ${g}, ${b}, ${primaryAlpha})`,
+    secondaryGradient: `rgba(0, 0, 0, ${secondaryAlpha})`,
   };
 };
 

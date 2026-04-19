@@ -1,61 +1,39 @@
-import { createWriteStream } from "fs";
-import { dirname } from "path";
-import { pipeline } from "stream/promises";
 import fs from "fs-extra";
+import path from "path";
+import { logger } from "./logger.js";
 
 /**
- * Downloads a file from a URL or copies a local file
- * @param {string} url - File URL (http/https) or local path (file://)
- * @param {string} filepath - Destination file path
- * @param {Object} options - Optional fetch configuration
- * @throws {Error} If download/copy fails or invalid parameters provided
+ * Syncs a resource to a destination, supporting both remote URLs and local file paths.
+ * @param {string} url - Source URL or file path (supports file:// protocol)
+ * @param {string} dest - Target destination path
+ * @returns {Promise<string>} Path to the downloaded/copied file
  */
-const downloadFile = async (url, filepath, options = {}) => {
-  if (typeof url !== "string" || !url) {
-    throw new Error("Invalid url: must be a non-empty string");
-  }
-  if (typeof filepath !== "string" || !filepath) {
-    throw new Error("Invalid filepath: must be a non-empty string");
-  }
-  if (typeof options !== "object" || options === null) {
-    throw new Error("Invalid options: must be an object");
-  }
-
-  console.log(`Starting download from ${url} to ${filepath}`);
-
+const downloadFile = async (url, dest) => {
   try {
-    await fs.ensureDir(dirname(filepath));
+    await fs.ensureDir(path.dirname(dest));
 
-    // Handle local file:// URLs (e.g., fallback images)
+    // Support for local fallbacks in imageLibrary/musicLibrary
     if (url.startsWith("file://")) {
-      const sourceFilePath = url.replace("file://", "");
-      await fs.copy(sourceFilePath, filepath);
-      console.log(
-        `File copied successfully from ${sourceFilePath} to ${filepath}`
-      );
-      return;
+      const localSource = url.replace("file://", "");
+      await fs.copy(localSource, dest);
+      logger(`Resource copied from local library: ${dest}`);
+      return dest;
     }
 
-    const response = await fetch(url, {
-      method: "GET",
-      ...options,
-    });
+    // Remote asset download (Unsplash / Quotes API)
+    const response = await fetch(url);
+    if (!response.ok)
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to download file: ${response.status} ${response.statusText}`
-      );
-    }
+    const buffer = await response.arrayBuffer();
+    await fs.writeFile(dest, Buffer.from(buffer));
 
-    if (!response.body) {
-      throw new Error("No response body");
-    }
-
-    await pipeline(response.body, createWriteStream(filepath));
-    console.log(`File downloaded successfully from ${url} to ${filepath}`);
+    logger(`Remote asset successfully downloaded: ${dest}`);
+    return dest;
   } catch (error) {
-    console.error(`Error downloading file from ${url}:`, error);
+    logger(`Failed to sync resource from ${url}: ${error.message}`, "error");
     throw error;
   }
 };
+
 export default downloadFile;

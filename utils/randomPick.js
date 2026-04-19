@@ -1,15 +1,13 @@
 /**
- * Selects a random item from an array
- * @param {Array} items - Non-empty array of items to pick from
- * @returns {*} A random item from the array
- * @throws {Error} If input is not a non-empty array
+ * Safely extracts a random item from any given array.
+ * @param {Array} list
+ * @returns {*} The selected item or null if empty
  */
-const randomPick = (items) => {
-  if (!Array.isArray(items) || items.length === 0) {
-    throw new Error("Input must be a non-empty array");
+const randomPick = (list) => {
+  if (!Array.isArray(list) || list.length === 0) {
+    return null;
   }
-  const randomIndex = Math.floor(Math.random() * items.length);
-  return items[randomIndex];
+  return list[Math.floor(Math.random() * list.length)];
 };
 
 export default randomPick;

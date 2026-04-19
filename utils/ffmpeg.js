@@ -1,32 +1,37 @@
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
+import { logger } from "./logger.js";
 
-const runFFMPEG = async (args) => {
+/**
+ * Promisified wrapper for FFmpeg process execution.
+ * @param {string[]} args - Array of command line arguments for FFmpeg
+ * @returns {Promise<void>}
+ */
+const runFFMPEG = (args) => {
   return new Promise((resolve, reject) => {
-    const ffmpegProcess = spawn("ffmpeg", args, {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let stderrOutput = "";
+    const process = spawn("ffmpeg", args);
+    let errorLog = "";
 
-    ffmpegProcess.stderr.on("data", (chunk) => {
-      stderrOutput += chunk.toString();
+    process.stderr.on("data", (data) => {
+      const output = data.toString();
+      errorLog += output;
+      // High-level monitoring of the render progress
+      if (output.toLowerCase().includes("error")) {
+        logger(`FFmpeg Sub-log: ${output.trim()}`, "warn");
+      }
     });
 
-    ffmpegProcess.on("error", (error) => {
-      reject(new Error(`Failed to start ffmpeg process: ${error.message}`));
-    });
-
-    ffmpegProcess.on("close", (code) => {
+    process.on("close", (code) => {
       if (code === 0) {
         resolve();
       } else {
-        const errorMessage =
-          stderrOutput.trim() || `ffmpeg exited with code ${code}`;
-        reject(
-          new Error(
-            `ffmpeg command failed: ${errorMessage}. Command: ffmpeg ${args.join(" ")}`
-          )
-        );
+        logger(`FFmpeg exited with error code ${code}`, "error");
+        reject(new Error(`FFmpeg failed to encode video: ${errorLog}`));
       }
+    });
+
+    process.on("error", (err) => {
+      logger(`Process Spawn Error: ${err.message}`, "error");
+      reject(err);
     });
   });
 };
