@@ -1,0 +1,31 @@
+name: "TikTok - Quotes Content"
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+      - name: System Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg build-essential libcairo2-dev libpango1.0-dev libjpeg-dev
+      - name: Install
+        run: npm ci
+      - name: Execute
+        run: node modules/tiktokModule.js
+        env:
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+          TIKTOK_ACCESS_TOKEN: ${{ secrets.TIKTOK_ACCESS_TOKEN }}
+      - name: Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiktok-output
+          path: output

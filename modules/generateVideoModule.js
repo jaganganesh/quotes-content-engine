@@ -32,14 +32,10 @@ dotenv.config();
 
 /**
  * Orchestrates the full video generation pipeline for a specific platform.
- * Ensures no file conflicts by using platform-specific temporary storage.
- * @param {string} platform - The target social media platform (instagram, tiktok, youtube)
- * @returns {Promise<void>}
  */
 export const generateVideo = async (platform) => {
   const platformKey = platform.toLowerCase();
 
-  // Define unique paths for this specific build to prevent concurrency conflicts
   const paths = {
     video: getOutputVideoPath(platformKey),
     payload: getPlatformPayloadStorage(platformKey),
@@ -51,28 +47,21 @@ export const generateVideo = async (platform) => {
   try {
     logger(`🚀 [${platformKey.toUpperCase()}] Starting Video Pipeline...`);
 
-    // Ensure directory structure exists
     await fs.ensureDir(TEMP_PATH);
     await fs.ensureDir(OUTPUT_PATH);
 
-    // 1. Concurrent Data Fetching
-    logger(`[${platformKey}] Fetching assets from APIs and Local Libraries...`);
     const [quote, imageMeta, musicMeta] = await Promise.all([
       getQuote(),
       getImage(),
       getMusic(),
     ]);
 
-    // 2. Physical File Download/Sync
-    logger(`[${platformKey}] Downloading resources to temporary storage...`);
     await Promise.all([
       downloadFile(imageMeta.url, paths.image),
       downloadFile(musicMeta.url, paths.music),
     ]);
 
-    // 3. Graphical Rendering
     const config = getPlatformConfig(platformKey);
-    logger(`[${platformKey}] Rendering canvas overlay...`);
     const overlay = await renderOverlay({
       quote: quote.quote,
       author: quote.author,
@@ -80,8 +69,6 @@ export const generateVideo = async (platform) => {
       outputPath: paths.overlay,
     });
 
-    // 4. FFmpeg Video Assembly
-    logger(`[${platformKey}] Encoding final video via FFmpeg...`);
     await createVideo({
       backgroundPath: paths.image,
       overlayPath: overlay.overlayPath,
@@ -89,8 +76,6 @@ export const generateVideo = async (platform) => {
       outputVideoPath: paths.video,
     });
 
-    // 5. Metadata & SEO Generation
-    logger(`[${platformKey}] Generating SEO-optimized content payload...`);
     const content = generateContent({
       platform: platformKey,
       quoteData: quote,
@@ -98,22 +83,20 @@ export const generateVideo = async (platform) => {
       musicData: musicMeta,
     });
 
-    // Save the metadata for the separate upload script/GH Action
-    await fs.writeJSON(paths.payload, content, { spaces: 2 });
-
-    logger(
-      `✅ [${platformKey.toUpperCase()}] Success! Video saved to: ${paths.video}`
+    await fs.writeJSON(
+      paths.payload,
+      { ...content, videoPath: paths.video },
+      { spaces: 2 }
     );
+
+    logger(`✅ [${platformKey.toUpperCase()}] Success! Video: ${paths.video}`);
   } catch (error) {
     logger(
       `❌ [${platformKey.toUpperCase()}] Pipeline Failed: ${error.message}`,
       "error"
     );
-
     throw error;
   }
 };
-
-await generateVideo("youtube");
 
 export default generateVideo;

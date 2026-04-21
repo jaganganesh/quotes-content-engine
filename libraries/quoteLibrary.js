@@ -1,6 +1,3 @@
-/**
- * Emergency local quote library.
- */
 const quotesLibrary = [
   {
     quote:
